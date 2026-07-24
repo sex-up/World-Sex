@@ -24,8 +24,25 @@
             --sidebar-bg: #111111;       
         }
 
-        /* --- [TAG: Global Styles] التصميم العام للـ Body وعناصر الصفحة --- */
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        /* --- [TAG: Global Styles] التصميم العام للـ Body وعناصر الصفحة مع إلغاء تحديد النصوص لعدم ظهور علامة جوجل --- */
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            -webkit-user-select: none; /* لمنع تحديد النص وإخفاء نافذة جوجل المنبثقة للنسخ */
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* السماح بتحديد النص داخل حقول الإدخال والتعليقات والبحث فقط لكي يتمكن المستخدم من الكتابة بحرية */
+        input, textarea, .comment-text, .video-desc, .video-title, .about-box p {
+            -webkit-user-select: text;
+            -moz-user-select: text;
+            -ms-user-select: text;
+            user-select: text;
+        }
 
         body { 
             background-color: var(--bg-color); 
@@ -118,11 +135,17 @@
         .user-profile-box {
             display: none;
             align-items: center;
-            gap: 12px;
+            justify-content: space-between;
             background: #1c1c1c;
             padding: 10px;
             border-radius: 8px;
             border: 1px solid #333;
+        }
+        .user-profile-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
         }
         .user-avatar {
             width: 40px;
@@ -136,10 +159,55 @@
             color: var(--text-color);
             font-weight: bold;
         }
-        .user-info-text .user-status {
+        .user-info-text .user-username {
             font-size: 11px;
             color: var(--accent-color);
         }
+        .edit-profile-icon {
+            color: #aaa;
+            cursor: pointer;
+            padding: 5px;
+            transition: 0.3s;
+        }
+        .edit-profile-icon:hover { color: var(--accent-color); }
+
+        /* --- [TAG: Profile Modal] نافذة تعديل الملف الشخصي --- */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-box {
+            background: var(--card-bg);
+            border: 1px solid var(--accent-color);
+            padding: 25px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+        .modal-box h3 { color: var(--accent-color); margin-bottom: 15px; }
+        .modal-box input {
+            width: 100%;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            padding: 10px 15px;
+            border-radius: 8px;
+            color: #fff;
+            outline: none;
+            margin-bottom: 15px;
+        }
+        .modal-box input:focus { border-color: var(--accent-color); }
+        .modal-btns { display: flex; gap: 10px; justify-content: flex-end; }
+        .modal-btn { padding: 8px 16px; border-radius: 6px; border: none; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .modal-btn.save { background: var(--accent-color); color: #000; }
+        .modal-btn.cancel { background: #333; color: #fff; }
 
         /* --- [TAG: Custom Toast Element] تصميم رسالة التنبيه المخصصة --- */
         #custom-toast {
@@ -193,10 +261,12 @@
         .video-title { font-size: 16px; font-weight: bold; margin-bottom: 5px; color: var(--accent-color); transition: color 0.5s ease;}
         .video-desc { font-size: 13px; color: #aaa; line-height: 1.5; }
 
-        .card-actions { display: flex; gap: 10px; align-items: center; }
+        .card-actions { display: flex; gap: 8px; align-items: center; }
         .action-btn { background: #222; border: 1px solid #444; color: #fff; padding: 8px; border-radius: 50%; cursor: pointer; transition: 0.3s; font-size: 14px; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; }
         .action-btn:hover { background: var(--accent-color); color: #000; border-color: var(--accent-color); }
         .action-btn.active { background: var(--accent-color); color: #000; }
+        .action-btn.liked { color: #e50914; border-color: #e50914; }
+        .action-btn.liked.active { background: #e50914; color: #fff; }
 
         /* --- [TAG: Player & Comments] تنسيق صفحة المشغل والتعليقات --- */
         #player-view { display: none; width: 100%; } 
@@ -206,6 +276,28 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.8); 
         }
         .main-video { width: 100%; aspect-ratio: 16/9; display: block; background-color: #000; outline: none; }
+        
+        .video-stats-bar {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+            align-items: center;
+        }
+        .stat-btn {
+            background: #222;
+            border: 1px solid #444;
+            color: #fff;
+            padding: 6px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            transition: 0.3s;
+        }
+        .stat-btn:hover { background: #333; border-color: var(--accent-color); }
+        .stat-btn.active { background: var(--accent-color); color: #000; border-color: var(--accent-color); }
 
         #for-you-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
         #for-you-list .video-card { border-radius: 4px; }
@@ -218,10 +310,24 @@
         .comment-submit-btn { background: var(--accent-color); border: none; color: #000; padding: 0 20px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: 0.3s; }
         .comment-submit-btn:hover { opacity: 0.9; }
 
-        .comment-item { display: flex; gap: 12px; margin-bottom: 15px; border-bottom: 1px solid #222; padding-bottom: 10px; }
+        /* [TAG: Scrollable Comments Box] صندوق التعليقات القابل للتمرير لمنع تمدد الصفحة */
+        .comments-scroll-box {
+            max-height: 350px;
+            overflow-y: auto;
+            padding-left: 5px;
+        }
+        .comments-scroll-box::-webkit-scrollbar { width: 5px; }
+        .comments-scroll-box::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+        .comments-scroll-box::-webkit-scrollbar-thumb:hover { background: var(--accent-color); }
+
+        .comment-item { display: flex; gap: 12px; margin-bottom: 15px; border-bottom: 1px solid #222; padding-bottom: 10px; align-items: flex-start; justify-content: space-between; }
+        .comment-left { display: flex; gap: 12px; flex-grow: 1; }
         .comment-avatar { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; }
-        .comment-content .comment-user { font-size: 13px; font-weight: bold; color: var(--accent-color); margin-bottom: 3px; }
-        .comment-content .comment-text { font-size: 13px; color: #ddd; }
+        .comment-content .comment-user { font-size: 13px; font-weight: bold; color: var(--accent-color); margin-bottom: 3px; cursor: pointer; display: inline-block; }
+        .comment-content .comment-user:hover { text-decoration: underline; }
+        .comment-content .comment-text { font-size: 13px; color: #ddd; word-break: break-all; }
+        .delete-comment-btn { background: none; border: none; color: #777; cursor: pointer; font-size: 13px; padding: 5px; transition: 0.3s; }
+        .delete-comment-btn:hover { color: #e50914; }
 
         /* --- [TAG: Static Pages] صفحة من نحن --- */
         #about-view { display: none; width: 100%; text-align: center; padding: 40px 20px; }
@@ -257,6 +363,19 @@
     <!-- [TAG: Sidebar Overlay] طبقة التعتيم الخلفية لإغلاق القائمة عند النقر خارجها -->
     <div id="sidebarOverlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
 
+    <!-- [TAG: Edit Profile Modal] نافذة تعديل البروفايل -->
+    <div id="profileModal" class="modal-overlay">
+	  <div class="modal-box">
+		<h3>تعديل الملف الشخصي</h3>
+		<p style="font-size: 12px; color: #aaa; margin-bottom: 15px;">اختر اسم مستخدم فريد ليظهر للآخرين داخل الموقع.</p>
+		<input type="text" id="editUsernameInput" placeholder="اكتب اسم المستخدم هنا...">
+		<div class="modal-btns">
+		  <button class="modal-btn cancel" onclick="closeProfileModal()">إلغاء</button>
+		  <button class="modal-btn save" onclick="saveProfileChanges()">حفظ</button>
+		</div>
+	  </div>
+    </div>
+
     <!-- [TAG: Sidebar Component] القائمة الجانبية وتسجيل الدخول -->
     <div id="mySidebar" class="sidebar">
 	  <button class="close-btn" onclick="toggleSidebar()"><i class="fa-solid fa-xmark"></i></button>
@@ -287,11 +406,14 @@
 		</div>
 
 		<div id="userProfileBox" class="user-profile-box">
-		  <img id="userAvatar" src="" alt="صورة المستخدم" class="user-avatar">
-		  <div class="user-info-text">
-			<div id="userName" class="user-name">اسم المستخدم</div>
-			<div class="user-status"><i class="fa-solid fa-circle-check"></i> متصل الآن</div>
+		  <div class="user-profile-info" onclick="openProfileModal()">
+			<img id="userAvatar" src="" alt="صورة المستخدم" class="user-avatar">
+			<div class="user-info-text">
+			  <div id="userName" class="user-name">اسم المستخدم</div>
+			  <div id="userHandle" class="user-username">@username</div>
+			</div>
 		  </div>
+		  <i class="fa-solid fa-pen-to-square edit-profile-icon" onclick="openProfileModal()" title="تعديل البروفايل"></i>
 		</div>
 	  </div>
     </div>
@@ -314,10 +436,18 @@
 		<video id="main-player" class="main-video" controls autoplay>
 		  <source src="" type="video/mp4">
 		</video>
-		<div class="video-info" style="padding: 20px;">
+		<div class="video-info" style="padding: 20px; flex-direction: column; gap: 10px;">
 		  <div>
 			<div class="video-title" id="player-title" style="font-size: 22px;">اسم الفيلم</div>
 			<div class="video-desc" id="player-desc">وصف الفيلم</div>
+		  </div>
+		  <div class="video-stats-bar">
+			<button class="stat-btn" id="playerLikeBtn" onclick="toggleLikeCurrentVideo()">
+			  <i class="fa-solid fa-thumbs-up"></i> <span id="playerLikeCount">0</span>
+			</button>
+			<button class="stat-btn" id="playerFavBtn" onclick="toggleFavoriteCurrentVideo()">
+			  <i class="fa-solid fa-bookmark"></i> <span id="playerFavText">حفظ</span>
+			</button>
 		  </div>
 		</div>
 	  </div>
@@ -328,7 +458,9 @@
 		  <input type="text" id="commentInput" placeholder="اكتب تعليقاً...">
 		  <button class="comment-submit-btn" onclick="addComment()">إرسال</button>
 		</div>
-		<div id="commentsList"></div>
+		<div class="comments-scroll-box">
+		  <div id="commentsList"></div>
+		</div>
 	  </div>
 
 	  <div class="section-title" style="margin-top: 30px;">For You - مقترح لك</div>
@@ -346,14 +478,15 @@
 <script>
         // --- [TAG: Database] قاعدة بيانات الأفلام والفيديوهات المؤقتة ---
         const moviesDatabase = [
-            { id: 1, title: "فيلم الأكشن الرهيب", desc: "قصة اكشن والحركة ممتعة جداً.", category: "افلام", src: "video1.mp4", poster: "https://via.placeholder.com/800x450/222/fff?text=Poster+1", comments: [] },
-            { id: 2, title: "مسلسل الغموض الحلقة 1", desc: "الحلقة الأولى من المسلسل المنتظر.", category: "مسلسلات", src: "video2.mp4", poster: "https://via.placeholder.com/800x450/222/fff?text=Poster+2", comments: [] },
-            { id: 3, title: "فيلم الكوميديا المضحك", desc: "فيلم يخليك تضحك من قلبك.", category: "افلام", src: "video3.mp4", poster: "https://via.placeholder.com/800x450/222/fff?text=Poster+3", comments: [] }
+            { id: 1, title: "فيلم الأكشن الرهيب", desc: "قصة اكشن والحركة ممتعة جداً.", category: "افلام", src: "video1.mp4", poster: "https://via.placeholder.com/800x450/222/fff?text=Poster+1", likes: 12, comments: [] },
+            { id: 2, title: "مسلسل الغموض الحلقة 1", desc: "الحلقة الأولى من المسلسل المنتظر.", category: "مسلسلات", src: "video2.mp4", poster: "https://via.placeholder.com/800x450/222/fff?text=Poster+2", likes: 8, comments: [] },
+            { id: 3, title: "فيلم الكوميديا المضحك", desc: "فيلم يخليك تضحك من قلبك.", category: "افلام", src: "video3.mp4", poster: "https://via.placeholder.com/800x450/222/fff?text=Poster+3", likes: 25, comments: [] }
         ];
 
         let currentUser = null; 
         let currentVideoId = null;
         let favorites = JSON.parse(localStorage.getItem('myflix_favorites')) || [];
+        let likesData = JSON.parse(localStorage.getItem('myflix_likes')) || {}; // { movieId: [userIds] }
 
         // --- [TAG: Custom Toast Function] دالة إظهار التنبيه الاحترافي ---
         function showToast(message) {
@@ -367,22 +500,34 @@
             }, 3500);
         }
 
-        // --- [TAG: Auth Logic] معالجة تسجيل الدخول وسحب البيانات من جوجل ---
+        // --- [TAG: Auth Logic] معالجة تسجيل الدخول وسحب البيانات من جوجل وتوليد يوزرنيم فريد ---
         function handleCredentialResponse(response) {
             const responsePayload = parseJwt(response.credential);
             
+            const googleId = responsePayload.sub;
+            const defaultUsername = "@" + responsePayload.name.replace(/\s+/g, '').toLowerCase() + Math.floor(Math.random() * 1000);
+            
+            // استرجاع البيانات المخزنة مسبقاً لهذا المستخدم إن وجدت
+            const savedProfile = JSON.parse(localStorage.getItem('myflix_user_' + googleId));
+
             currentUser = {
+                id: googleId,
                 name: responsePayload.name,
+                username: savedProfile ? savedProfile.username : defaultUsername,
                 picture: responsePayload.picture
             };
 
+            updateUserProfileUI();
+            showToast("تم تسجيل الدخول بنجاح، أهلاً بك " + currentUser.name);
+        }
+
+        function updateUserProfileUI() {
             document.getElementById('google-signin-wrapper').style.display = 'none';
             const profileBox = document.getElementById('userProfileBox');
             document.getElementById('userAvatar').src = currentUser.picture;
             document.getElementById('userName').innerText = currentUser.name;
+            document.getElementById('userHandle').innerText = currentUser.username;
             profileBox.style.display = 'flex';
-            
-            showToast("تم تسجيل الدخول بنجاح، أهلاً بك " + currentUser.name);
         }
 
         function parseJwt(token) {
@@ -394,7 +539,43 @@
             return JSON.parse(jsonPayload);
         }
 
-        // --- [TAG: Interactive Features & Guards] التحقق من تسجيل الدخول ---
+        // --- [TAG: Profile Management] إدارة تعديل البروفايل واسم المستخدم ---
+        function openProfileModal() {
+            if (!currentUser) return;
+            document.getElementById('editUsernameInput').value = currentUser.username;
+            document.getElementById('profileModal').classList.add('active');
+        }
+
+        function closeProfileModal() {
+            document.getElementById('profileModal').classList.remove('active');
+        }
+
+        function saveProfileChanges() {
+            const newUsername = document.getElementById('editUsernameInput').value.trim();
+            if (!newUsername) {
+                showToast("يجب إدخال اسم مستخدم صحيح!");
+                return;
+            }
+
+            currentUser.username = newUsername.startsWith('@') ? newUsername : '@' + newUsername;
+            localStorage.setItem('myflix_user_' + currentUser.id, JSON.stringify({ username: currentUser.username }));
+            
+            updateUserProfileUI();
+            closeProfileModal();
+            showToast("تم تحديث اسم المستخدم بنجاح!");
+            
+            // إعادة تحديث التعليقات لو كانت ظاهرة لتحديث اليوزرنيم الجديد
+            if(currentVideoId) {
+                const movie = moviesDatabase.find(m => m.id === currentVideoId);
+                if(movie) renderComments(movie.comments);
+            }
+        }
+
+        function viewUserProfile(username) {
+            showToast("المستخدم: " + username);
+        }
+
+        // --- [TAG: Interactive Features & Guards] الإعجاب والمفضلة والتعليقات ---
 
         function toggleFavorite(movieId, event) {
             event.stopPropagation();
@@ -414,6 +595,67 @@
             }
             localStorage.setItem('myflix_favorites', JSON.stringify(favorites));
             renderVideos(moviesDatabase, "movies-list");
+            if(currentVideoId === movieId) updatePlayerButtonsState();
+        }
+
+        function toggleLike(movieId, event) {
+            event.stopPropagation();
+            if (!currentUser) {
+                showToast("يجب تسجيل الدخول أولاً للإعجاب بالفيديو!");
+                return;
+            }
+
+            if (!likesData[movieId]) likesData[movieId] = [];
+            const userIndex = likesData[movieId].indexOf(currentUser.id);
+            const movie = moviesDatabase.find(m => m.id === movieId);
+
+            if (userIndex > -1) {
+                likesData[movieId].splice(userIndex, 1);
+                movie.likes--;
+                showToast("تم إزالة الإعجاب.");
+            } else {
+                likesData[movieId].push(currentUser.id);
+                movie.likes++;
+                showToast("تم تسجيل إعجابك بالفيديو!");
+            }
+
+            localStorage.setItem('myflix_likes', JSON.stringify(likesData));
+            renderVideos(moviesDatabase, "movies-list");
+            if(currentVideoId === movieId) updatePlayerButtonsState();
+        }
+
+        function toggleFavoriteCurrentVideo() {
+            if(currentVideoId) toggleFavorite(currentVideoId, { stopPropagation: () => {} });
+        }
+
+        function toggleLikeCurrentVideo() {
+            if(currentVideoId) toggleLike(currentVideoId, { stopPropagation: () => {} });
+        }
+
+        function updatePlayerButtonsState() {
+            const movie = moviesDatabase.find(m => m.id === currentVideoId);
+            if(!movie) return;
+
+            const isFav = favorites.includes(movie.id);
+            const favBtn = document.getElementById('playerFavBtn');
+            const favText = document.getElementById('playerFavText');
+            if (isFav) {
+                favBtn.classList.add('active');
+                favText.innerText = "محفوظ";
+            } else {
+                favBtn.classList.remove('active');
+                favText.innerText = "حفظ";
+            }
+
+            const likedUsers = likesData[movie.id] || [];
+            const isLiked = currentUser && likedUsers.includes(currentUser.id);
+            const likeBtn = document.getElementById('playerLikeBtn');
+            document.getElementById('playerLikeCount').innerText = movie.likes;
+            if (isLiked) {
+                likeBtn.classList.add('active');
+            } else {
+                likeBtn.classList.remove('active');
+            }
         }
 
         function addComment() {
@@ -429,10 +671,30 @@
 
             const movie = moviesDatabase.find(m => m.id === currentVideoId);
             if(movie) {
-                movie.comments.unshift({ name: currentUser.name, avatar: currentUser.picture, text: text });
+                const commentObj = {
+                    id: Date.now(),
+                    userId: currentUser.id,
+                    name: currentUser.name,
+                    username: currentUser.username,
+                    avatar: currentUser.picture,
+                    text: text
+                };
+                movie.comments.unshift(commentObj);
                 input.value = "";
                 renderComments(movie.comments);
                 showToast("تم إضافة تعليقك بنجاح.");
+            }
+        }
+
+        function deleteComment(commentId) {
+            const movie = moviesDatabase.find(m => m.id === currentVideoId);
+            if(!movie) return;
+
+            const index = movie.comments.findIndex(c => c.id === commentId);
+            if(index > -1) {
+                movie.comments.splice(index, 1);
+                renderComments(movie.comments);
+                showToast("تم مسح التعليق بنجاح.");
             }
         }
 
@@ -441,19 +703,23 @@
             container.innerHTML = "";
             
             if(commentsArray.length === 0) {
-                container.innerHTML = "<div style='color: #666; font-size: 13px;'>لا توجد تعليقات بعد. كن أول من يعلق!</div>";
+                container.innerHTML = "<div style='color: #666; font-size: 13px; padding: 10px;'>لا توجد تعليقات بعد. كن أول من يعلق!</div>";
                 return;
             }
 
             commentsArray.forEach(c => {
+                const isMyComment = currentUser && c.userId === currentUser.id;
                 const item = document.createElement('div');
                 item.className = 'comment-item';
                 item.innerHTML = `
-                    <img src="${c.avatar}" class="comment-avatar" alt="user">
-                    <div class="comment-content">
-                        <div class="comment-user">${c.name}</div>
-                        <div class="comment-text">${c.text}</div>
+                    <div class="comment-left">
+                        <img src="${c.avatar}" class="comment-avatar" alt="user">
+                        <div class="comment-content">
+                            <div class="comment-user" onclick="viewUserProfile('${c.username}')">${c.username}</div>
+                            <div class="comment-text">${c.text}</div>
+                        </div>
                     </div>
+                    ${isMyComment ? `<button class="delete-comment-btn" onclick="deleteComment(${c.id})" title="مسح التعليق"><i class="fa-solid fa-trash"></i></button>` : ''}
                 `;
                 container.appendChild(item);
             });
@@ -545,6 +811,9 @@
 
             moviesArray.forEach(movie => {
                 const isFav = favorites.includes(movie.id);
+                const likedUsers = likesData[movie.id] || [];
+                const isLiked = currentUser && likedUsers.includes(currentUser.id);
+
                 const card = document.createElement("div");
                 card.className = "video-card";
                 card.onclick = () => openPlayer(movie); 
@@ -556,6 +825,9 @@
                             <div class="video-desc">${movie.desc}</div>
                         </div>
                         <div class="card-actions">
+                            <button class="action-btn liked ${isLiked ? 'active' : ''}" onclick="toggleLike(${movie.id}, event)" title="إعجاب">
+                                <i class="fa-solid fa-thumbs-up"></i>
+                            </button>
                             <button class="action-btn ${isFav ? 'active' : ''}" onclick="toggleFavorite(${movie.id}, event)" title="حفظ في المفضلة">
                                 <i class="fa-solid fa-bookmark"></i>
                             </button>
@@ -587,6 +859,7 @@
             document.getElementById("player-desc").innerText = movie.desc;
             player.play(); 
             
+            updatePlayerButtonsState();
             renderComments(movie.comments);
 
             const forYou = moviesDatabase.filter(m => m.id !== movie.id);
