@@ -1,19 +1,15 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- محركات البحث والـ SEO -->
     <title>MyFlix | مشاهدة الأفلام والمسلسلات مجاناً</title>
     <meta name="description" content="شاهد أحدث الأفلام والمسلسلات بجودة عالية مترجمة اون لاين.">
-    <meta name="keywords" content="أفلام, مسلسلات, مشاهدة اون لاين, افلام مترجمة">
     <link rel="canonical" href="https://sex-up.github.io/World-Sex/">
-    
-    <!-- مكتبة الأيقونات -->
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <style>
+<style>
         :root {
             --bg-color: #000000;
             --header-bg: #1a1a1a;
@@ -23,250 +19,250 @@
             --sidebar-bg: #111111;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            overflow-x: hidden;
-        }
+        body { background-color: var(--bg-color); color: var(--text-color); overflow-x: hidden; }
 
-        /* --- الهيدر العلوي --- */
+        /* --- الهيدر وتصميم البحث --- */
         header {
-            background-color: var(--header-bg);
-            padding: 12px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid var(--accent-color);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            height: 70px;
+            background-color: var(--header-bg); padding: 12px 20px; display: flex;
+            justify-content: space-between; align-items: center; border-bottom: 2px solid var(--accent-color);
+            position: sticky; top: 0; z-index: 100; height: 70px;
         }
 
-        .menu-btn {
-            background: none;
-            border: none;
-            color: var(--text-color);
-            font-size: 24px;
-            cursor: pointer;
-        }
+        .header-right, .header-left { display: flex; align-items: center; gap: 15px; }
 
-        .logo {
-            font-size: 22px;
-            font-weight: bold;
-            color: var(--text-color);
-            text-decoration: none;
-        }
+        .menu-btn { background: none; border: none; color: var(--text-color); font-size: 24px; cursor: pointer; transition: 0.3s; }
+        .menu-btn:hover { color: var(--accent-color); transform: scale(1.1); }
 
-        .logo span {
-            background-color: var(--accent-color);
-            color: black;
-            padding: 2px 6px;
-            border-radius: 4px;
-        }
+        .logo { font-size: 22px; font-weight: bold; color: var(--text-color); text-decoration: none; }
+        .logo span { background-color: var(--accent-color); color: black; padding: 2px 6px; border-radius: 4px; }
 
-        /* زر تسجيل الدخول بجوجل */
+        .search-box {
+            background: #222; border-radius: 20px; padding: 5px 15px; display: flex; align-items: center;
+            border: 1px solid #444; transition: 0.3s;
+        }
+        .search-box:focus-within { border-color: var(--accent-color); box-shadow: 0 0 8px rgba(255, 163, 26, 0.5); }
+        .search-box input {
+            background: transparent; border: none; color: white; padding: 5px; outline: none; width: 150px;
+        }
+        .search-box i { color: #888; }
+
         .google-login-btn {
-            background: white;
-            color: #333;
-            border: none;
-            padding: 8px 14px;
-            border-radius: 4px;
-            font-weight: bold;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 14px;
-            transition: 0.3s;
+            background: white; color: #333; border: none; padding: 8px 14px; border-radius: 4px;
+            font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.3s;
         }
+        .google-login-btn:hover { background: #ddd; transform: translateY(-2px); }
+        .google-login-btn i { color: #4285F4; }
 
-        .google-login-btn:hover {
-            background: #f1f1f1;
-        }
-
-        .google-login-btn i {
-            color: #4285F4;
-            font-size: 16px;
-        }
-
-        /* --- القائمة الجانبية (Sidebar) --- */
+        /* --- القائمة الجانبية (بتنقلات سلسة) --- */
         .sidebar {
-            height: 100%;
-            width: 0;
-            position: fixed;
-            z-index: 101;
-            top: 0;
-            right: 0;
-            background-color: var(--sidebar-bg);
-            overflow-x: hidden;
-            transition: 0.3s;
-            padding-top: 80px;
-            border-left: 1px solid #333;
+            height: 100%; width: 0; position: fixed; z-index: 101; top: 0; right: 0;
+            background-color: var(--sidebar-bg); overflow-x: hidden; transition: width 0.4s ease;
+            padding-top: 80px; border-left: 1px solid #333; box-shadow: -5px 0 15px rgba(0,0,0,0.5);
         }
-
         .sidebar a {
-            padding: 12px 25px;
-            text-decoration: none;
-            font-size: 18px;
-            color: var(--text-color);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            transition: 0.2s;
+            padding: 15px 25px; text-decoration: none; font-size: 18px; color: var(--text-color);
+            display: flex; align-items: center; gap: 15px; transition: all 0.3s ease; border-right: 4px solid transparent;
         }
-
-        .sidebar a:hover {
-            background-color: var(--accent-color);
-            color: black;
+        .sidebar a:hover, .sidebar a.active {
+            background-color: #222; color: var(--accent-color); border-right: 4px solid var(--accent-color);
+            padding-right: 35px; /* حركة سلسة للنص */
         }
-
         .sidebar .close-btn {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            font-size: 25px;
-            background: none;
-            border: none;
-            color: var(--text-color);
-            cursor: pointer;
+            position: absolute; top: 20px; left: 20px; font-size: 25px; background: none; border: none;
+            color: var(--text-color); cursor: pointer; transition: 0.3s;
         }
+        .sidebar .close-btn:hover { color: var(--accent-color); transform: rotate(90deg); }
 
-        /* --- المحتوى الرئيسي والأقسام (فيديوهات عريضة وتحت بعض) --- */
-        .main-content {
-            padding: 20px;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .section-title {
-            font-size: 20px;
-            margin-bottom: 15px;
-            border-right: 4px solid var(--accent-color);
-            padding-right: 10px;
-            color: var(--text-color);
-        }
-
-        .videos-container {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .video-card {
-            background-color: var(--card-bg);
-            border-radius: 8px;
-            overflow: hidden;
-            border: 1px solid #222;
-            width: 100%;
-        }
-
-        /* مشغل الفيديو العريض */
-        .video-player {
-            width: 100%;
-            height: 250px;
-            background-color: #111;
-            display: block;
-        }
-
-        .video-info {
-            padding: 15px;
-        }
-
-        .video-title {
-            font-size: 16px;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .video-desc {
-            font-size: 13px;
-            color: #aaa;
-        }
-    </style>
-</head>
-<body>
-
-    <!-- الهيدر -->
-    <header>
-        <button class="menu-btn" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
-        <a href="#" class="logo">My<span>Flix</span></a>
+        /* --- الأقسام والفيديوهات (عريضة وتحت بعض) --- */
+        .main-content { padding: 20px; max-width: 800px; margin: 0 auto; animation: fadeIn 0.5s ease; }
         
-        <!-- زر تسجيل الدخول يوجه فوراً بدون رسائل -->
-        <button class="google-login-btn" onclick="loginWithGoogle()">
-            <i class="fa-brands fa-google"></i> دخول
-        </button>
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .section-title { font-size: 20px; margin-bottom: 15px; border-right: 4px solid var(--accent-color); padding-right: 10px; }
+        
+        .videos-container { display: flex; flex-direction: column; gap: 20px; margin-bottom: 30px; }
+        
+        .video-card {
+            background-color: var(--card-bg); border-radius: 8px; overflow: hidden; border: 1px solid #222;
+            width: 100%; cursor: pointer; transition: 0.3s;
+        }
+        .video-card:hover { border-color: var(--accent-color); transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+        
+        .video-thumbnail { width: 100%; height: 200px; background-color: #222; object-fit: cover; display: block; }
+        .video-info { padding: 15px; }
+        .video-title { font-size: 16px; font-weight: bold; margin-bottom: 5px; color: var(--accent-color); }
+        .video-desc { font-size: 13px; color: #aaa; }
+
+        /* --- صفحة المشغل المنفصلة --- */
+        #player-view { display: none; } /* مخفية في البداية */
+        .player-container { width: 100%; background: #000; border-radius: 8px; overflow: hidden; margin-bottom: 20px; border: 1px solid #333; }
+        .main-video { width: 100%; height: 300px; display: block; }
+        
+        .no-results { text-align: center; color: #888; padding: 20px; font-size: 18px; }
+
+</style>
+  </head>
+  <body>
+
+    <header>
+	  <div class="header-right">
+		<button class="menu-btn" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+		<a href="#" class="logo" onclick="goHome()">My<span>Flix</span></a>
+	  </div>
+
+	  <div class="header-left">
+		<!-- مربع البحث الذكي -->
+		<div class="search-box">
+		  <i class="fa-solid fa-magnifying-glass"></i>
+		  <input type="text" id="searchInput" placeholder="ابحث عن فيلم..." onkeyup="handleSearch()">
+		</div>
+
+		<button class="google-login-btn" onclick="loginWithGoogle()">
+		  <i class="fa-brands fa-google"></i> دخول
+		</button>
+	  </div>
     </header>
 
-    <!-- القائمة الجانبية -->
+    <!-- القائمة الجانبية بقت شغالة -->
     <div id="mySidebar" class="sidebar">
-        <button class="close-btn" onclick="toggleSidebar()"><i class="fa-solid fa-xmark"></i></button>
-        <a href="#"><i class="fa-solid fa-house"></i> الرئيسية</a>
-        <a href="#"><i class="fa-solid fa-film"></i> الأفلام</a>
-        <a href="#"><i class="fa-solid fa-tv"></i> المسلسلات</a>
-        <a href="#"><i class="fa-solid fa-fire"></i> الأكثر مشاهدة</a>
-        <a href="#"><i class="fa-solid fa-heart"></i> المفضلة</a>
+	  <button class="close-btn" onclick="toggleSidebar()"><i class="fa-solid fa-xmark"></i></button>
+	  <a href="#" onclick="filterCategory('الكل', this)" class="active"><i class="fa-solid fa-house"></i> الرئيسية</a>
+	  <a href="#" onclick="filterCategory('افلام', this)"><i class="fa-solid fa-film"></i> الأفلام</a>
+	  <a href="#" onclick="filterCategory('مسلسلات', this)"><i class="fa-solid fa-tv"></i> المسلسلات</a>
     </div>
 
-    <!-- المحتوى والأقسام (عريضة وتحت بعضها) -->
-    <div class="main-content">
-        
-        <!-- قسم أحدث الأفلام -->
-        <div class="section-title">أحدث الأفلام</div>
-        <div class="videos-container">
-            
-            <!-- فيديو 1 -->
-            <div class="video-card">
-                <video class="video-player" controls poster="">
-                    <source src="رابط_فيديو_الفيلم_هنا.mp4" type="video/mp4">
-                    متصفحك لا يدعم عرض الفيديو.
-                </video>
-                <div class="video-info">
-                    <div class="video-title">اسم الفيلم الأول (عريض)</div>
-                    <div class="video-desc">وصف بسيط عن الفيلم أو القصة هنا...</div>
-                </div>
-            </div>
-
-            <!-- فيديو 2 -->
-            <div class="video-card">
-                <video class="video-player" controls poster="">
-                    <source src="رابط_فيديو_الفيلم_الثاني.mp4" type="video/mp4">
-                    متصفحك لا يدعم عرض الفيديو.
-                </video>
-                <div class="video-info">
-                    <div class="video-title">اسم الفيلم الثاني (عريض)</div>
-                    <div class="video-desc">وصف بسيط عن الفيلم أو القصة هنا...</div>
-                </div>
-            </div>
-
-        </div>
-
+    <!-- 1. الصفحة الرئيسية (تصفح الفيديوهات) -->
+    <div id="home-view" class="main-content">
+	  <div class="section-title" id="home-title">أحدث الإضافات</div>
+	  <div class="videos-container" id="movies-list">
+		<!-- الفيديوهات هتظهر هنا بالجافاسكريبت -->
+	  </div>
     </div>
 
-    <!-- أكواد الجافاسكريبت -->
-    <script>
+    <!-- 2. صفحة تشغيل الفيديو (بتفتح لما تضغط على فيديو) -->
+    <div id="player-view" class="main-content">
+	  <!-- المشغل الأساسي -->
+	  <div class="player-container">
+		<video id="main-player" class="main-video" controls autoplay>
+		  <source src="" type="video/mp4">
+		</video>
+		<div class="video-info">
+		  <div class="video-title" id="player-title" style="font-size: 22px;">اسم الفيلم</div>
+		  <div class="video-desc" id="player-desc">وصف الفيلم</div>
+		</div>
+	  </div>
+
+	  <!-- قسم For You (مقترحات تحت الفيديو) -->
+	  <div class="section-title">For You - مقترح لك</div>
+	  <div class="videos-container" id="for-you-list">
+		<!-- الفيديوهات المقترحة هتظهر هنا -->
+	  </div>
+    </div>
+
+<script>
+        // --- قاعدة بيانات الفيديوهات الخاصة بيك ---
+        const moviesDatabase = [
+            { id: 1, title: "فيلم الأكشن الرهيب", desc: "قصة اكشن وحركة ممتعة جداً.", category: "افلام", src: "video1.mp4", poster: "https://via.placeholder.com/800x200/222/fff?text=Poster+1" },
+            { id: 2, title: "مسلسل الغموض الحلقة 1", desc: "الحلقة الأولى من المسلسل المنتظر.", category: "مسلسلات", src: "video2.mp4", poster: "https://via.placeholder.com/800x200/222/fff?text=Poster+2" },
+            { id: 3, title: "فيلم الكوميديا المضحك", desc: "فيلم يخليك تضحك من قلبك.", category: "افلام", src: "video3.mp4", poster: "https://via.placeholder.com/800x200/222/fff?text=Poster+3" }
+        ];
+
+        // --- دوال القائمة الجانبية ---
         function toggleSidebar() {
             const sidebar = document.getElementById("mySidebar");
-            if (sidebar.style.width === "250px") {
-                sidebar.style.width = "0";
-            } else {
-                sidebar.style.width = "250px";
-            }
+            sidebar.style.width = sidebar.style.width === "250px" ? "0" : "250px";
         }
 
-        // التوجيه الفوري لتسجيل الدخول (حط رابط صفحة تسجيل الدخول أو حساب Google الحقيقي هنا)
+        // --- دالة البحث الذكي (بتتجاهل الهمزات والحروف الكابيتال) ---
+        function normalizeText(text) {
+            return text.replace(/[أإآ]/g, 'ا').toLowerCase();
+        }
+
+        function handleSearch() {
+            const query = normalizeText(document.getElementById("searchInput").value);
+            const filtered = moviesDatabase.filter(movie => normalizeText(movie.title).includes(query));
+            
+            goHome(); // نرجع للصفحة الرئيسية نعرض نتايج البحث
+            renderVideos(filtered, "movies-list");
+            document.getElementById("home-title").innerText = query ? "نتائج البحث..." : "أحدث الإضافات";
+        }
+
+        // --- دالة فلترة الأقسام من القائمة الجانبية ---
+        function filterCategory(category, element) {
+            // تلوين الزرار اللي انضغط عليه في القائمة
+            document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
+            element.classList.add('active');
+            
+            let filtered = category === 'الكل' ? moviesDatabase : moviesDatabase.filter(m => m.category === category);
+            
+            goHome();
+            renderVideos(filtered, "movies-list");
+            document.getElementById("home-title").innerText = category === 'الكل' ? "أحدث الإضافات" : category;
+            toggleSidebar(); // نقفل القائمة بعد الاختيار
+        }
+
+        // --- دالة عرض الفيديوهات (بتصنع الكروت العريضة) ---
+        function renderVideos(moviesArray, containerId) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = ""; // تفريغ المحتوى القديم
+            
+            if(moviesArray.length === 0) {
+                container.innerHTML = "<div class='no-results'>عذراً، لم يتم العثور على نتائج.</div>";
+                return;
+            }
+
+            moviesArray.forEach(movie => {
+                const card = document.createElement("div");
+                card.className = "video-card";
+                // لما نضغط على الكارت يفتح صفحة المشغل
+                card.onclick = () => openPlayer(movie);
+                card.innerHTML = `
+                    <img src="${movie.poster}" class="video-thumbnail" alt="${movie.title}">
+                    <div class="video-info">
+                        <div class="video-title">${movie.title}</div>
+                        <div class="video-desc">${movie.desc}</div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // --- التنقل بين الصفحات (الرئيسية والمشغل) ---
+        function goHome() {
+            document.getElementById("home-view").style.display = "block";
+            document.getElementById("player-view").style.display = "none";
+            document.getElementById("main-player").pause(); // نوقف الفيديو لو شغال
+        }
+
+        function openPlayer(movie) {
+            // إخفاء الرئيسية وإظهار المشغل
+            document.getElementById("home-view").style.display = "none";
+            document.getElementById("player-view").style.display = "block";
+            
+            // تغيير بيانات الفيديو
+            const player = document.getElementById("main-player");
+            player.src = movie.src;
+            document.getElementById("player-title").innerText = movie.title;
+            document.getElementById("player-desc").innerText = movie.desc;
+            player.play(); // تشغيل تلقائي
+            
+            // عرض مقترحات For You (باقي الفيديوهات ما عدا اللي شغال)
+            const forYou = moviesDatabase.filter(m => m.id !== movie.id);
+            renderVideos(forYou, "for-you-list");
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' }); // نطلع لأول الصفحة بسلاسة
+        }
+
+        // --- تسجيل الدخول ---
         function loginWithGoogle() {
-            // حالياً يوجهك لرابط تسجيل الدخول أو حسابك، تقدر تستبدل الرابط باللي تحبه
             window.location.href = "https://accounts.google.com";
         }
-    </script>
-</body>
+
+        // --- أول ما الموقع يفتح، نعرض كل الفيديوهات ---
+        renderVideos(moviesDatabase, "movies-list");
+</script>
+  </body>
 </html>
+
