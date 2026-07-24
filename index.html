@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- محركات البحث والـ SEO (اللي ما ينفعش ننساها) -->
+    
+    <!-- محركات البحث والـ SEO -->
     <title>MyFlix | مشاهدة الأفلام والمسلسلات مجاناً</title>
     <meta name="description" content="شاهد أحدث الأفلام والمسلسلات بجودة عالية مترجمة اون لاين.">
     <meta name="keywords" content="أفلام, مسلسلات, مشاهدة اون لاين, افلام مترجمة">
     <link rel="canonical" href="https://sex-up.github.io/World-Sex/">
-
+    
     <!-- مكتبة الأيقونات -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-<style>
+    <style>
         :root {
             --bg-color: #000000;
             --header-bg: #1a1a1a;
@@ -139,9 +139,11 @@
             cursor: pointer;
         }
 
-        /* --- المحتوى الرئيسي والأقسام --- */
+        /* --- المحتوى الرئيسي والأقسام (فيديوهات عريضة وتحت بعض) --- */
         .main-content {
             padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
         }
 
         .section-title {
@@ -152,92 +154,105 @@
             color: var(--text-color);
         }
 
-        .movies-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-            gap: 15px;
+        .videos-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
             margin-bottom: 30px;
         }
 
-        .movie-card {
+        .video-card {
             background-color: var(--card-bg);
             border-radius: 8px;
             overflow: hidden;
             border: 1px solid #222;
-        }
-
-        .movie-poster {
             width: 100%;
-            height: 200px;
-            background-color: #222;
-            object-fit: cover;
         }
 
-        .movie-info {
-            padding: 10px;
+        /* مشغل الفيديو العريض */
+        .video-player {
+            width: 100%;
+            height: 250px;
+            background-color: #111;
+            display: block;
         }
 
-        .movie-title {
-            font-size: 14px;
+        .video-info {
+            padding: 15px;
+        }
+
+        .video-title {
+            font-size: 16px;
             font-weight: bold;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            margin-bottom: 5px;
         }
-</style>
-  </head>
-  <body>
+
+        .video-desc {
+            font-size: 13px;
+            color: #aaa;
+        }
+    </style>
+</head>
+<body>
 
     <!-- الهيدر -->
     <header>
-	  <button class="menu-btn" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
-	  <a href="#" class="logo">My<span>Flix</span></a>
-
-	  <!-- زر تسجيل الدخول بجوجل -->
-	  <button class="google-login-btn" onclick="loginWithGoogle()">
-		<i class="fa-brands fa-google"></i> دخول
-	  </button>
+        <button class="menu-btn" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+        <a href="#" class="logo">My<span>Flix</span></a>
+        
+        <!-- زر تسجيل الدخول يوجه فوراً بدون رسائل -->
+        <button class="google-login-btn" onclick="loginWithGoogle()">
+            <i class="fa-brands fa-google"></i> دخول
+        </button>
     </header>
 
     <!-- القائمة الجانبية -->
     <div id="mySidebar" class="sidebar">
-	  <button class="close-btn" onclick="toggleSidebar()"><i class="fa-solid fa-xmark"></i></button>
-	  <a href="#"><i class="fa-solid fa-house"></i> الرئيسية</a>
-	  <a href="#"><i class="fa-solid fa-film"></i> الأفلام</a>
-	  <a href="#"><i class="fa-solid fa-tv"></i> المسلسلات</a>
-	  <a href="#"><i class="fa-solid fa-fire"></i> الأكثر مشاهدة</a>
-	  <a href="#"><i class="fa-solid fa-heart"></i> المفضلة</a>
+        <button class="close-btn" onclick="toggleSidebar()"><i class="fa-solid fa-xmark"></i></button>
+        <a href="#"><i class="fa-solid fa-house"></i> الرئيسية</a>
+        <a href="#"><i class="fa-solid fa-film"></i> الأفلام</a>
+        <a href="#"><i class="fa-solid fa-tv"></i> المسلسلات</a>
+        <a href="#"><i class="fa-solid fa-fire"></i> الأكثر مشاهدة</a>
+        <a href="#"><i class="fa-solid fa-heart"></i> المفضلة</a>
     </div>
 
-    <!-- المحتوى والأقسام -->
+    <!-- المحتوى والأقسام (عريضة وتحت بعضها) -->
     <div class="main-content">
+        
+        <!-- قسم أحدث الأفلام -->
+        <div class="section-title">أحدث الأفلام</div>
+        <div class="videos-container">
+            
+            <!-- فيديو 1 -->
+            <div class="video-card">
+                <video class="video-player" controls poster="">
+                    <source src="رابط_فيديو_الفيلم_هنا.mp4" type="video/mp4">
+                    متصفحك لا يدعم عرض الفيديو.
+                </video>
+                <div class="video-info">
+                    <div class="video-title">اسم الفيلم الأول (عريض)</div>
+                    <div class="video-desc">وصف بسيط عن الفيلم أو القصة هنا...</div>
+                </div>
+            </div>
 
-	  <!-- قسم الأفلام الرائجة -->
-	  <div class="section-title">أحدث الأفلام</div>
-	  <div class="movies-grid">
-		<div class="movie-card">
-		  <div class="movie-poster"></div>
-		  <div class="movie-info"><div class="movie-title">اسم الفيلم هنا</div></div>
-		</div>
-		<div class="movie-card">
-		  <div class="movie-poster"></div>
-		  <div class="movie-info"><div class="movie-title">اسم الفيلم هنا</div></div>
-		</div>
-	  </div>
+            <!-- فيديو 2 -->
+            <div class="video-card">
+                <video class="video-player" controls poster="">
+                    <source src="رابط_فيديو_الفيلم_الثاني.mp4" type="video/mp4">
+                    متصفحك لا يدعم عرض الفيديو.
+                </video>
+                <div class="video-info">
+                    <div class="video-title">اسم الفيلم الثاني (عريض)</div>
+                    <div class="video-desc">وصف بسيط عن الفيلم أو القصة هنا...</div>
+                </div>
+            </div>
 
-	  <!-- قسم المسلسلات -->
-	  <div class="section-title">أحدث المسلسلات</div>
-	  <div class="movies-grid">
-		<div class="movie-card">
-		  <div class="movie-poster"></div>
-		  <div class="movie-info"><div class="movie-title">اسم المسلسل هنا</div></div>
-		</div>
-	  </div>
+        </div>
 
     </div>
 
-    <!-- كود الجافاسكريبت المدمج جوه الصفحة -->
-<script>
+    <!-- أكواد الجافاسكريبت -->
+    <script>
         function toggleSidebar() {
             const sidebar = document.getElementById("mySidebar");
             if (sidebar.style.width === "250px") {
@@ -247,10 +262,11 @@
             }
         }
 
+        // التوجيه الفوري لتسجيل الدخول (حط رابط صفحة تسجيل الدخول أو حساب Google الحقيقي هنا)
         function loginWithGoogle() {
-            alert("سيتم توجيهك لتسجيل الدخول بحساب جوجل قريبًا.");
+            // حالياً يوجهك لرابط تسجيل الدخول أو حسابك، تقدر تستبدل الرابط باللي تحبه
+            window.location.href = "https://accounts.google.com";
         }
-</script>
-  </body>
+    </script>
+</body>
 </html>
-
