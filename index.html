@@ -275,8 +275,56 @@
             margin-bottom: 20px; border: 2px solid var(--accent-color); 
             box-shadow: 0 10px 30px rgba(0,0,0,0.8); 
         }
-        .main-video { width: 100%; aspect-ratio: 16/9; display: block; background-color: #000; outline: none; }
         
+        /* حاوية المشغل مع دعم صورة الغلاف قبل التشغيل */
+        .player-wrapper {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16/9;
+            background-color: #000;
+        }
+        .main-video { width: 100%; height: 100%; display: block; outline: none; border: none; }
+        
+        .player-poster-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 5;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .player-poster-overlay::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+        }
+        .play-custom-btn {
+            position: relative;
+            z-index: 6;
+            width: 70px;
+            height: 70px;
+            background: var(--accent-color);
+            color: #000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.8);
+            transition: transform 0.3s ease, background-color 0.3s;
+        }
+        .player-poster-overlay:hover .play-custom-btn {
+            transform: scale(1.1);
+        }
+
         .video-stats-bar {
             display: flex;
             gap: 15px;
@@ -433,9 +481,15 @@
     <!-- [TAG: Player View] مشغل الفيديو والتعليقات -->
     <div id="player-view" class="main-content">
 	  <div class="player-container">
-		<video id="main-player" class="main-video" controls autoplay>
-		  <source src="" type="video/mp4">
-		</video>
+		<div class="player-wrapper">
+		  <!-- صورة الغلاف التي تظهر قبل تشغيل الفيديو -->
+		  <div id="playerPoster" class="player-poster-overlay" onclick="startVideoPlayback()">
+			<div class="play-custom-btn"><i class="fa-solid fa-play"></i></div>
+		  </div>
+		  <!-- الـ iframe الخاص بعرض الفيديو -->
+		  <iframe id="main-player" class="main-video" src="" frameborder="0" scrolling="0" allowfullscreen></iframe>
+		</div>
+
 		<div class="video-info" style="padding: 20px; flex-direction: column; gap: 10px;">
 		  <div>
 			<div class="video-title" id="player-title" style="font-size: 22px;">اسم الفيلم</div>
@@ -476,17 +530,18 @@
     </div>
 
 <script>
-        // --- [TAG: Database] قاعدة بيانات الأفلام والفيديوهات المؤقتة ---
+        // --- [TAG: Database] قاعدة بيانات الأفلام والفيديوهات المؤقتة (ضع رابط الـ iframe أو embed هنا لكل فيلم) ---
         const moviesDatabase = [
-            { id: 1, title: "فيلم الأكشن الرهيب", desc: "قصة اكشن والحركة ممتعة جداً.", category: "افلام", src: "video1.mp4", poster: "https://via.placeholder.com/800x450/222/fff?text=Poster+1", likes: 12, comments: [] },
-            { id: 2, title: "مسلسل الغموض الحلقة 1", desc: "الحلقة الأولى من المسلسل المنتظر.", category: "مسلسلات", src: "video2.mp4", poster: "https://via.placeholder.com/800x450/222/fff?text=Poster+2", likes: 8, comments: [] },
-            { id: 3, title: "فيلم الكوميديا المضحك", desc: "فيلم يخليك تضحك من قلبك.", category: "افلام", src: "video3.mp4", poster: "https://via.placeholder.com/800x450/222/fff?text=Poster+3", likes: 25, comments: [] }
+            { id: 1, title: "احلي نودز مصرية كيرڤي", desc: "ًاتفرج عليها وهيا بتبعت نود لعشيقها ...", category: "افلام", src: "https://abyssplayer.com/-odDluhnf", poster: "https://iili.io/COmsl5J.th.jpg", likes: 12, comments: [] },
+            { id: 2, title: "مسلسل الغموض الحلقة 1", desc: "الحلقة الأولى من المسلسل المنتظر.", category: "مسلسلات", src: "https://abyssplayer.com/-odDluhnf", poster: "https://via.placeholder.com/800x450/222/fff?text=Poster+2", likes: 8, comments: [] },
+            { id: 3, title: "فيلم الكوميديا المضحك", desc: "فيلم يخليك تضحك من قلبك.", category: "افلام", src: "https://abyssplayer.com/-odDluhnf", poster: "https://via.placeholder.com/800x450/222/fff?text=Poster+3", likes: 25, comments: [] }
         ];
 
         let currentUser = null; 
         let currentVideoId = null;
         let favorites = JSON.parse(localStorage.getItem('myflix_favorites')) || [];
         let likesData = JSON.parse(localStorage.getItem('myflix_likes')) || {}; // { movieId: [userIds] }
+        let currentVideoSrc = ""; // لتخزين الرابط مؤقتاً لحين الضغط على زر التشغيل
 
         // --- [TAG: Custom Toast Function] دالة إظهار التنبيه الاحترافي ---
         function showToast(message) {
@@ -842,22 +897,30 @@
             document.getElementById("home-view").style.display = "block";
             document.getElementById("player-view").style.display = "none";
             document.getElementById("about-view").style.display = "none";
-            document.getElementById("main-player").pause(); 
+            document.getElementById("main-player").src = ""; 
+            document.getElementById("playerPoster").style.display = "flex";
         }
 
         function openPlayer(movie) {
             currentVideoId = movie.id;
+            currentVideoSrc = movie.src; // حفظ رابط الفيديو
+            
             document.getElementById("home-view").style.display = "none";
             document.getElementById("about-view").style.display = "none";
             document.getElementById("player-view").style.display = "block";
             
             changeTheme('مشغل');
             
-            const player = document.getElementById("main-player");
-            player.src = movie.src;
+            // ضبط صورة الغلاف فوق المشغل قبل التشغيل
+            const posterEl = document.getElementById("playerPoster");
+            posterEl.style.backgroundImage = `url('${movie.poster}')`;
+            posterEl.style.display = "flex";
+
+            // تفريغ الـ iframe لحين الضغط على زر التشغيل
+            document.getElementById("main-player").src = "";
+            
             document.getElementById("player-title").innerText = movie.title;
             document.getElementById("player-desc").innerText = movie.desc;
-            player.play(); 
             
             updatePlayerButtonsState();
             renderComments(movie.comments);
@@ -868,13 +931,23 @@
             window.scrollTo({ top: 0, behavior: 'smooth' }); 
         }
 
+        // دالة يتم تفعيلها عند الضغط على زر التشغيل فوق الغلاف
+        function startVideoPlayback() {
+            const posterEl = document.getElementById("playerPoster");
+            const player = document.getElementById("main-player");
+            
+            // إخفاء الغلاف وتشغيل الـ iframe فوراً
+            posterEl.style.display = "none";
+            player.src = currentVideoSrc;
+        }
+
         function showAboutUs(element) {
             document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
             element.classList.add('active');
             document.getElementById("home-view").style.display = "none";
             document.getElementById("player-view").style.display = "none";
             document.getElementById("about-view").style.display = "block";
-            document.getElementById("main-player").pause();
+            document.getElementById("main-player").src = "";
             changeTheme('من_نحن');
             toggleSidebar();
         }
