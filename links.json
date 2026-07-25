@@ -1,14 +1,20 @@
 [
   {
     "id": 1,
-    "title": "تجربة فيلم",
-    "desc": "وصف الفيديو هنا...",
+    "title": "فيلم تجربة",
+    "desc": "...هنا الفيديو وصف",
     "category": "افلام",
     "poster": "https://iili.io/Ce2ecCP.jpg",
     "likes": 100,
     "comments": [],
     "sources": [
-      { "label": "سيرفر رئيسي", "src": "ضع_رابط_الفيديو_هنا" }
+      {
+        "label": "رئيسي سيرفر",
+        "src": "https://example.com/video.m3u8",
+        "expires_at": 1785235800,
+        "source_page_url": "https://source-website.com/page"
+      }
     ]
   }
 ]
+

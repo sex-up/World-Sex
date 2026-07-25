@@ -1,63 +1,55 @@
 import json
-import requests
-from bs4 import BeautifulSoup
+import time
 
-# اسم ملف الروابط
 JSON_FILE = 'links.json'
 
-def get_fresh_link_from_source(movie_id):
-    """
-    هنا تحط اللوجيك (الكود) الخاص بك لجلب الرابط الجديد لكل فيلم.
-    مثلاً: لو بتدخل على موقع معين تسحب منه الرابط أو بتستخرج التوكن.
-    """
-    try:
-        # مثال افتراضي: لو بتدخل على صفحة المصدر الخاصة بالفيلم
-        # target_url = f"https://example.com/watch/{movie_id}"
-        # headers = {'User-Agent': 'Mozilla/5.0'}
-        # response = requests.get(target_url, headers=headers)
-        # soup = BeautifulSoup(response.text, 'html.parser')
-        
-        # استخراج الرابط الجديد من الصفحة (ح حسب تصميم الموقع اللي بتسحب منه)
-        # new_src = soup.find('source')['src'] 
-        
-        # حالياً كمثال توضيحي (استبدلها بطريقتك الفعلية):
-        new_src = "https://video-nss.xhpingcdn.com/new_token_link_here.m3u8"
-        return new_src
-        
-    except Exception as e:
-        print(f"خطأ أثناء جلب الرابط للفيلم {movie_id}: {e}")
-        return None
+def fetch_new_link(source_page_url):
+    # ضع هنا كود السحب الخاص بك (مثلاً باستخدام requests أو BeautifulSoup) لاستخراج الرابط الجديد
+    new_link = "https://new-direct-link.com/stream.m3u8"
+    new_expiry = time.time() + 3600  # مثال: الرابط الجديد صالح لمدة ساعة من الآن
+    return new_link, new_expiry
 
-def update_streaming_links():
-    # 1. قراءة ملف links.json الحالي
-    try:
-        with open(JSON_FILE, 'r', encoding='utf-8') as f:
-            movies = json.load(f)
-    except FileNotFoundError:
-        print("ملف links.json غير موجود!")
-        return
+def monitor_links():
+    print("Link monitoring service started on Termux...")
+    while True:
+        try:
+            with open(JSON_FILE, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+            
+            current_time = time.time()
+            updated = False
+            
+            # المرور على جميع الأفلام/المسلسلات في القائمة
+            for item in data:
+                for source in item.get('sources', []):
+                    # التحقق مما إذا كان السيرفر يحتوي على وقت انتهاء
+                    if 'expires_at' in source:
+                        time_left = source['expires_at'] - current_time
+                        
+                        # لو باقي أقل من 5 دقائق (300 ثانية) أو انتهى الوقت
+                        if time_left < 300:
+                            print(f"Updating link for: {item['title']} [{source['label']}]...")
+                            page_url = source.get('source_page_url', '')
+                            
+                            new_link, new_expiry = fetch_new_link(page_url)
+                            
+                            # تحديث القيم داخل القاموس
+                            source['src'] = new_link
+                            source['expires_at'] = new_expiry
+                            updated = True
+            
+            # حفظ التحديثات في ملف links.json إذا حدث تغير
+            if updated:
+                with open(JSON_FILE, 'w', encoding='utf-8') as f:
+                    json.dump(data, f, ensure_ascii=False, indent=2)
+                print("links.json updated and saved successfully!")
+                
+        except Exception as e:
+            print(f"Error occurred: {e}")
+            
+        # فحص الروابط كل دقيقة
+        time.sleep(60)
 
-    updated_count = 0
+if __name__ == '__main__':
+    monitor_links()
 
-    # 2. المرور على كل فيلم وتحديث رابطه
-    for movie in movies:
-        movie_id = movie['id']
-        print(f"جاري فحص وتحديث فيلم: {movie['title']}...")
-        
-        # استدعاء دالة جلب الرابط الجديد
-        new_link = get_fresh_link_from_source(movie_id)
-        
-        if new_link:
-            # تحديث أول سيرفر في قائمة الـ sources بالرابط الجديد
-            if 'sources' in movie and len(movie['sources']) > 0:
-                movie['sources'][0]['src'] = new_link
-                updated_count += 1
-
-    # 3. حفظ التعديلات الجديدة في ملف links.json
-    with open(JSON_FILE, 'w', encoding='utf-8') as f:
-        json.dump(movies, f, ensure_ascii=False, indent=4)
-    
-    print(f"تم الانتهاء! تم تحديث روابط {updated_count} فيلم بنجاح.")
-
-if __name__ == "__main__":
-    update_streaming_links()
