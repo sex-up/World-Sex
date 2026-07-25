@@ -10,7 +10,7 @@
     <title>MyFlix | مشاهدة الأفلام والمسلسلات مجاناً</title>
     <meta name="description" content="شاهد أحدث الأفلام والمسلسلات بجودة عالية اون لاين.">
     <meta name="keywords" content="أفلام, مسلسلات, مشاهدة اون لاين, MyFlix, أفلام مترجمة, مسلسلات أجنبية, مسلسلات عربية, أفلام مجانا, سكس مترجم, نيك, سكس, سحاق, نودز, سكس نودز">
-    
+
     <!-- ========================================== -->
     <!-- 2. المكتبات الخارجية (FontAwesome / Google / HLS) -->
     <!-- ========================================== -->
@@ -423,49 +423,22 @@
     <!-- ========================================== -->
 <script>
         // =========================================================================================================================
-        // [TAG: DATABASE] قاعدة بيانات الأفلام والروابط (منظمة في أسطر أفقية)
+        // [TAG: DATABASE] قاعدة بيانات الأفلام والروابط (تم استبدال القائمة الثابتة بالملف الخارجي links.json)
         // =========================================================================================================================
         
-        const STREAM_BASE = "https://video-nss.xhpingcdn.com/k-oEAmeCSuygQ3KgK1AqtA==,1784955600/media=hls4/multi=256x144:144p,426x240:240p,854x480:480p,1280x720:720p,1920x1080:1080p,3840x2160:2160p/023/030/539/";
-   
-        const STREAM_BASE1 = "https://video-nss.xhpingcdn.com/rmOVF3n1KgB20nwQBjN0jQ==,1784959200/media=hls4/multi=256x144:144p:,426x240:240p:,854x480:480p:,1280x720:720p:,1920x1080:1080p:/030/160/456/";
+        let moviesDatabase = [];
 
-        const moviesDatabase = [
-            { id: 1, title: "احلي نودز مصرية كيرڤي", desc: "ًاتفرج عليها وهيا بتبعت نود لعشيقها ...", category: "افلام", poster: "https://iili.io/COmsl5J.th.jpg", likes: 1500, comments: [], sources: [{ label: "سيرفر AbyssPlayer", src: "https://abyssplayer.com/-odDluhnf" }] },
-            { id: 2, title: "فيلم مص وتنطيط ", desc: "بتخون جوزها  عشان زبة زغير ...", category: "افلام", poster: "https://iili.io/Ce2ecCP.jpg", likes: 1000, comments: [], sources: [{ label: "تلقائي (TPL)", src: STREAM_BASE + "_TPL_.h264.mp4.m3u8" }, { label: "720p HD", src: STREAM_BASE + "720p.h264.mp4.m3u8" }, { label: "480p", src: STREAM_BASE + "480p.h264.mp4.m3u8" }, { label: "240p", src: STREAM_BASE + "240p.h264.mp4.m3u8" }, { label: "144p", src: STREAM_BASE + "144p.h264.mp4.m3u8" }] },
-
-            // --- 30 سطر جاهز لإضافة روابطك مباشرة (iframe, mp4, m3u8) ---
-            { id: 3, title: "بتجيبهم بالمخدة وتنزل احلي لبن ", desc: "اتفرج واتمتع .", category: "افلام", poster: "https://iili.io/CeKDs5b.md.jpg", likes: 5000, comments: [], sources: [{ label: "", src: STREAM_BASE1 + "_TPL_.h264.mp4.m3u8" }, { label: "720p HD", src: STREAM_BASE1 + "720p.h264.mp4.m3u8" }, { label: "480p", src: STREAM_BASE1 + "480p.h264.mp4.m3u8" }, { label: "240p", src: STREAM_BASE1 + "240p.h264.mp4.m3u8" }, { label: "144p", src: STREAM_BASE1 + "144p.h264.mp4.m3u8" }] },
-            { id: 4, title: "عنوان الفيديو 4", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
-            { id: 5, title: "عنوان الفيديو 5", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
-            { id: 6, title: "عنوان الفيديو 6", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
-            { id: 7, title: "عنوان الفيديو 7", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
-            { id: 8, title: "عنوان الفيديو 8", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
-            { id: 9, title: "عنوان الفيديو 9", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
-            { id: 10, title: "عنوان الفيديو 10", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
-            { id: 11, title: "عنوان الفيديو 11", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
-            { id: 12, title: "عنوان الفيديو 12", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
-            { id: 13, title: "عنوان الفيديو 13", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
-            { id: 14, title: "عنوان الفيديو 14", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
-            { id: 15, title: "عنوان الفيديو 15", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
-            { id: 16, title: "عنوان الفيديو 16", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
-            { id: 17, title: "عنوان الفيديو 17", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
-            { id: 18, title: "عنوان الفيديو 18", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
-            { id: 19, title: "عنوان الفيديو 19", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
-            { id: 20, title: "عنوان الفيديو 20", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
-            { id: 21, title: "عنوان الفيديو 21", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
-            { id: 22, title: "عنوان الفيديو 22", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
-            { id: 23, title: "عنوان الفيديو 23", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
-            { id: 24, title: "عنوان الفيديو 24", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
-            { id: 25, title: "عنوان الفيديو 25", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
-            { id: 26, title: "عنوان الفيديو 26", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
-            { id: 27, title: "عنوان الفيديو 27", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
-            { id: 28, title: "عنوان الفيديو 28", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
-            { id: 29, title: "عنوان الفيديو 29", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
-            { id: 30, title: "عنوان الفيديو 30", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
-            { id: 31, title: "عنوان الفيديو 31", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
-            { id: 32, title: "عنوان الفيديو 32", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] }
-        ];
+        // جلب الأفلام والروابط من ملف links.json الخارجي الذي يحدثه جيت هب أوتوماتيكياً
+        async function loadMoviesDatabase() {
+            try {
+                const response = await fetch('links.json');
+                moviesDatabase = await response.json();
+                renderVideos(moviesDatabase, "movies-list");
+            } catch (error) {
+                console.error("فشل تحميل قاعدة بيانات الأفلام:", error);
+                showToast("تعذر تحميل قائمة الأفلام، تأكد من ملف links.json");
+            }
+        }
 
         // =========================================================================
         // [TAG: GLOBAL VARIABLES] المتغيرات العامة للنظام
@@ -476,6 +449,105 @@
         let likesData = JSON.parse(localStorage.getItem('myflix_likes')) || {}; 
         let currentVideoSrc = ""; 
         let hlsPlayer = null;
+
+        // =========================================================================
+        // [TAG: STREAM TOKEN MANAGER] نظام مراقبة صلاحية الروابط وتحديثها قبل الانتهاء بـ 5 دقائق
+        // =========================================================================
+        class WebStreamManager {
+            constructor(onRefreshNeeded) {
+                this.onRefreshNeeded = onRefreshNeeded;
+                this.timerId = null;
+            }
+
+            extractExpirationTime(url) {
+                try {
+                    const parts = url.split(',');
+                    if (parts.length > 1) {
+                        const tokenPart = parts[1].split('/')[0];
+                        const exp = parseInt(tokenPart, 10);
+                        if (!isNaN(exp)) return exp;
+                    }
+                    const urlObj = new URL(url);
+                    const exp = urlObj.searchParams.get("expires");
+                    return exp ? parseInt(exp, 10) : null;
+                } catch (e) {
+                    return null;
+                }
+            }
+
+            monitorLink(streamUrl) {
+                const expirationTimestamp = this.extractExpirationTime(streamUrl);
+                if (!expirationTimestamp) return;
+
+                const currentTime = Math.floor(Date.now() / 1000);
+                const timeRemaining = expirationTimestamp - currentTime;
+                const refreshDelaySeconds = timeRemaining - 300; // 5 دقائق قبل الانتهاء
+
+                if (refreshDelaySeconds <= 0) {
+                    this.triggerRefresh();
+                    return;
+                }
+
+                this.stopMonitoring();
+
+                this.timerId = setTimeout(() => {
+                    this.triggerRefresh();
+                }, refreshDelaySeconds * 1000);
+            }
+
+            triggerRefresh() {
+                if (typeof this.onRefreshNeeded === "function") {
+                    this.onRefreshNeeded();
+                }
+            }
+
+            stopMonitoring() {
+                if (this.timerId) {
+                    clearTimeout(this.timerId);
+                    this.timerId = null;
+                }
+            }
+        }
+
+        const streamManager = new WebStreamManager(async () => {
+            showToast("جاري تجديد صلاحية الرابط في الخلفية...");
+            
+            try {
+                // إرسال طلب للسيرفر الخاص بك (Backend / API) لجلب الرابط الجديد
+                const response = await fetch(`https://your-api-domain.com/get-fresh-token?url=${encodeURIComponent(currentVideoSrc)}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const data = await response.json();
+                
+                if (data && data.newUrl) {
+                    currentVideoSrc = data.newUrl;
+                    const player = document.getElementById("main-player");
+                    
+                    if (currentVideoSrc.includes(".m3u8") && hlsPlayer) {
+                        hlsPlayer.loadSource(currentVideoSrc);
+                        hlsPlayer.attachMedia(player);
+                    } else {
+                        const currentTime = player.currentTime;
+                        player.src = currentVideoSrc;
+                        player.currentTime = currentTime;
+                        player.play();
+                    }
+
+                    streamManager.monitorLink(currentVideoSrc);
+                    showToast("تم تحديث الرابط بنجاح واستمرار المشاهدة.");
+                } else {
+                    throw new Error("فشل الـ API في إرجاع رابط جديد");
+                }
+
+            } catch (error) {
+                console.error("خطأ في تحديث الرابط:", error);
+                showToast("تعذر تحديث الرابط تلقائياً، يجدر بك تحديث الصفحة.");
+            }
+        });
 
         // =========================================================================
         // [TAG: UI NOTIFICATIONS] وظيفة الإشعارات السريعة (Toast)
@@ -793,6 +865,7 @@
             if (hlsPlayer) {
                 hlsPlayer.destroy();
             }
+            streamManager.stopMonitoring();
             document.getElementById("playerPoster").style.display = "flex";
         }
 
@@ -858,6 +931,9 @@
             
             posterEl.style.display = "none";
 
+            // تفعيل مراقبة صلاحية الرابط الحالي عند بدء التشغيل
+            streamManager.monitorLink(currentVideoSrc);
+
             // فحص نوع الرابط هل هو iframe أم ملف فيديو مباشر
             if (currentVideoSrc.includes("iframe") || currentVideoSrc.includes("http") && !currentVideoSrc.includes(".mp4") && !currentVideoSrc.includes(".m3u8") && !currentVideoSrc.includes("video-nss")) {
                 // إذا كان رابط مشغل خارجي/iframe
@@ -907,7 +983,8 @@
             toggleSidebar();
         }
         
-        renderVideos(moviesDatabase, "movies-list");
+        // تشغيل دالة جلب قاعدة البيانات من ملف links.json عند فتح الموقع
+        loadMoviesDatabase();
         
 </script>
   </body>
