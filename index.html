@@ -191,7 +191,7 @@
         }
         
         .player-wrapper { position: relative; width: 100%; aspect-ratio: 16/9; background-color: #000; }
-        .main-video { width: 100%; height: 100%; display: block; outline: none; border: none; }
+        .main-video, .main-iframe { width: 100%; height: 100%; display: block; outline: none; border: none; }
         
         .player-poster-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
@@ -365,7 +365,9 @@
           <div id="playerPoster" class="player-poster-overlay" onclick="startVideoPlayback()">
             <div class="play-custom-btn"><i class="fa-solid fa-play"></i></div>
           </div>
-          <video id="main-player" class="main-video" controls></video>
+          <!-- تم إضافة عنصر الـ iframe وعنصر الفيديو معاً للتبديل بينهما ديناميكياً -->
+          <iframe id="main-iframe" class="main-iframe" style="display: none;" allowfullscreen></iframe>
+          <video id="main-player" class="main-video" controls style="display: none;"></video>
         </div>
 
         <div class="video-info" style="padding: 20px; flex-direction: column; gap: 10px;">
@@ -421,17 +423,18 @@
 <script>
         // =========================================================================================================================
         // [TAG: DATABASE] قاعدة بيانات الأفلام والروابط (منظمة في أسطر أفقية)
-        // كل فيلم في سطر واحد لتوفير المساحة وسهولة الإضافة والاستبدال
         // =========================================================================================================================
         
         const STREAM_BASE = "https://video-nss.xhpingcdn.com/k-oEAmeCSuygQ3KgK1AqtA==,1784955600/media=hls4/multi=256x144:144p,426x240:240p,854x480:480p,1280x720:720p,1920x1080:1080p,3840x2160:2160p/023/030/539/";
+   
+        const STREAM_BASE1 = "https://video-nss.xhpingcdn.com/rmOVF3n1KgB20nwQBjN0jQ==,1784959200/media=hls4/multi=256x144:144p:,426x240:240p:,854x480:480p:,1280x720:720p:,1920x1080:1080p:/030/160/456/";
 
         const moviesDatabase = [
-            { id: 1, title: "احلي نودز مصرية كيرڤي", desc: "ًاتفرج عليها وهيا بتبعت نود لعشيقها ...", category: "افلام", poster: "https://iili.io/COmsl5J.th.jpg", likes: 12, comments: [], sources: [{ label: "سيرفر AbyssPlayer", src: "https://abyssplayer.com/-odDluhnf" }] },
-            { id: 2, title: "فيلم مص وتنطيط ", desc: "بتخون جوزها  عشان زبة زغير ...", category: "افلام", poster: "https://iili.io/Ce2ecCP.jpg", likes: 35, comments: [], sources: [{ label: "تلقائي (TPL)", src: STREAM_BASE + "_TPL_.h264.mp4.m3u8" }, { label: "720p HD", src: STREAM_BASE + "720p.h264.mp4.m3u8" }, { label: "480p", src: STREAM_BASE + "480p.h264.mp4.m3u8" }, { label: "240p", src: STREAM_BASE + "240p.h264.mp4.m3u8" }, { label: "144p", src: STREAM_BASE + "144p.h264.mp4.m3u8" }] },
+            { id: 1, title: "احلي نودز مصرية كيرڤي", desc: "ًاتفرج عليها وهيا بتبعت نود لعشيقها ...", category: "افلام", poster: "https://iili.io/COmsl5J.th.jpg", likes: 1500, comments: [], sources: [{ label: "سيرفر AbyssPlayer", src: "https://abyssplayer.com/-odDluhnf" }] },
+            { id: 2, title: "فيلم مص وتنطيط ", desc: "بتخون جوزها  عشان زبة زغير ...", category: "افلام", poster: "https://iili.io/Ce2ecCP.jpg", likes: 1000, comments: [], sources: [{ label: "تلقائي (TPL)", src: STREAM_BASE + "_TPL_.h264.mp4.m3u8" }, { label: "720p HD", src: STREAM_BASE + "720p.h264.mp4.m3u8" }, { label: "480p", src: STREAM_BASE + "480p.h264.mp4.m3u8" }, { label: "240p", src: STREAM_BASE + "240p.h264.mp4.m3u8" }, { label: "144p", src: STREAM_BASE + "144p.h264.mp4.m3u8" }] },
 
-            // --- 30 سطر جاهز لإضافة روابطك مباشرة ---
-            { id: 3, title: "عنوان الفيديو 3", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
+            // --- 30 سطر جاهز لإضافة روابطك مباشرة (iframe, mp4, m3u8) ---
+            { id: 3, title: "بتجيبهم بالمخدة وتنزل احلي لبن ", desc: "اتفرج واتمتع .", category: "افلام", poster: "https://iili.io/CeKDs5b.md.jpg", likes: 5000, comments: [], sources: [{ label: "", src: STREAM_BASE1 + "_TPL_.h264.mp4.m3u8" }, { label: "720p HD", src: STREAM_BASE1 + "720p.h264.mp4.m3u8" }, { label: "480p", src: STREAM_BASE1 + "480p.h264.mp4.m3u8" }, { label: "240p", src: STREAM_BASE1 + "240p.h264.mp4.m3u8" }, { label: "144p", src: STREAM_BASE1 + "144p.h264.mp4.m3u8" }] },
             { id: 4, title: "عنوان الفيديو 4", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
             { id: 5, title: "عنوان الفيديو 5", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
             { id: 6, title: "عنوان الفيديو 6", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
@@ -782,7 +785,10 @@
             document.getElementById("about-view").style.display = "none";
             
             const player = document.getElementById("main-player");
+            const iframe = document.getElementById("main-iframe");
             player.pause();
+            player.src = "";
+            iframe.src = "";
             if (hlsPlayer) {
                 hlsPlayer.destroy();
             }
@@ -790,11 +796,10 @@
         }
 
         // =========================================================================
-        // [TAG: VIDEO PLAYER LOGIC] التحكم في مشغل الفيديو والجودات
+        // [TAG: VIDEO PLAYER LOGIC] التحكم في مشغل الفيديو والجودات ودعم الـ iframe
         // =========================================================================
         function openPlayer(movie) {
             currentVideoId = movie.id;
-            
             currentVideoSrc = movie.sources[0].src;
             
             document.getElementById("home-view").style.display = "none";
@@ -842,36 +847,53 @@
             if (posterEl.style.display === "none") {
                 startVideoPlayback();
             }
-            showToast("تم تغيير الجودة إلى: " + clickedBtn.innerText);
+            showToast("تم تغيير السيرفر إلى: " + clickedBtn.innerText);
         }
 
         function startVideoPlayback() {
             const posterEl = document.getElementById("playerPoster");
             const player = document.getElementById("main-player");
+            const iframe = document.getElementById("main-iframe");
             
             posterEl.style.display = "none";
 
-            if (currentVideoSrc.includes(".m3u8")) {
-                if (Hls.isSupported()) {
-                    if (hlsPlayer) {
-                        hlsPlayer.destroy();
-                    }
-                    hlsPlayer = new Hls();
-                    hlsPlayer.loadSource(currentVideoSrc);
-                    hlsPlayer.attachMedia(player);
-                    hlsPlayer.on(Hls.Events.MANIFEST_PARSED, function() {
-                        player.play();
-                    });
-                } else if (player.canPlayType('application/vnd.apple.mpegurl')) {
-                    player.src = currentVideoSrc;
-                    player.addEventListener('loadedmetadata', function() {
-                        player.play();
-                    });
-                }
-            } else {
+            // فحص نوع الرابط هل هو iframe أم ملف فيديو مباشر
+            if (currentVideoSrc.includes("iframe") || currentVideoSrc.includes("http") && !currentVideoSrc.includes(".mp4") && !currentVideoSrc.includes(".m3u8") && !currentVideoSrc.includes("video-nss")) {
+                // إذا كان رابط مشغل خارجي/iframe
                 if (hlsPlayer) hlsPlayer.destroy();
-                player.src = currentVideoSrc;
-                player.play();
+                player.pause();
+                player.style.display = "none";
+                
+                iframe.src = currentVideoSrc;
+                iframe.style.display = "block";
+            } else {
+                // إذا كان رابط فيديو مباشر (MP4 أو M3U8)
+                iframe.style.display = "none";
+                iframe.src = "";
+                player.style.display = "block";
+
+                if (currentVideoSrc.includes(".m3u8")) {
+                    if (Hls.isSupported()) {
+                        if (hlsPlayer) {
+                            hlsPlayer.destroy();
+                        }
+                        hlsPlayer = new Hls();
+                        hlsPlayer.loadSource(currentVideoSrc);
+                        hlsPlayer.attachMedia(player);
+                        hlsPlayer.on(Hls.Events.MANIFEST_PARSED, function() {
+                            player.play();
+                        });
+                    } else if (player.canPlayType('application/vnd.apple.mpegurl')) {
+                        player.src = currentVideoSrc;
+                        player.addEventListener('loadedmetadata', function() {
+                            player.play();
+                        });
+                    }
+                } else {
+                    if (hlsPlayer) hlsPlayer.destroy();
+                    player.src = currentVideoSrc;
+                    player.play();
+                }
             }
         }
 
@@ -883,8 +905,9 @@
             document.getElementById("about-view").style.display = "block";
             toggleSidebar();
         }
-
+        
         renderVideos(moviesDatabase, "movies-list");
+        
 </script>
   </body>
 </html>
