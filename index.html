@@ -7,9 +7,9 @@
     <!-- ========================================== -->
     <!-- 1. معلومات الموقع الأساسية (SEO & Meta)   -->
     <!-- ========================================== -->
-    <title>MyFlix | مشاهدة الأفلام والمسلسلات مجاناً</title>
-    <meta name="description" content="شاهد أحدث الأفلام والمسلسلات بجودة عالية اون لاين.">
-    <meta name="keywords" content="أفلام, مسلسلات, مشاهدة اون لاين, MyFlix, أفلام مترجمة, مسلسلات أجنبية, مسلسلات عربية, أفلام مجانا, سكس مترجم, نيك, سكس, سحاق, نودز, سكس نودز">
+    <title>MovieHub | مشاهدة الأفلام والمسلسلات مجاناً</title>
+    <meta name="description" content="شاهد أحدث الأفلام والمسلسلات بجودة عالية اون لاين على MovieHub.">
+    <meta name="keywords" content="أفلام, مسلسلات, مشاهدة اون لاين, MovieHub, أفلام مترجمة, مسلسلات أجنبية, مسلسلات عربية, أفلام مجانا">
 
     <!-- ========================================== -->
     <!-- 2. المكتبات الخارجية (FontAwesome / Google / HLS) -->
@@ -275,7 +275,7 @@
       </div>
 
       <div class="header-left">
-        <a href="#" class="logo" onclick="filterCategory('الكل', this)">My<span>Flix</span></a>
+        <a href="#" class="logo" onclick="filterCategory('الكل', this)">Movie<span>Hub</span></a>
         <button class="menu-btn" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
       </div>
     </header>
@@ -413,7 +413,7 @@
     <!-- ========================================== -->
     <div id="about-view" class="main-content">
       <div class="about-box">
-        <h2>عن MyFlix</h2>
+        <h2>عن MovieHub</h2>
         <p>نحن منصة تهدف لتوفير أفضل وأحدث الأفلام والمسلسلات بجودة عالية وسيرفرات سريعة لضمان تجربة مشاهدة ممتعة ومجانية للجميع.</p>
       </div>
     </div>
@@ -423,22 +423,42 @@
     <!-- ========================================== -->
 <script>
         // =========================================================================================================================
-        // [TAG: DATABASE] قاعدة بيانات الأفلام والروابط (تم استبدال القائمة الثابتة بالملف الخارجي links.json)
+        // [TAG: DATABASE] قاعدة بيانات الأفلام والروابط (منظمة في أسطر أفقية)
         // =========================================================================================================================
-        
-        let moviesDatabase = [];
-
-        // جلب الأفلام والروابط من ملف links.json الخارجي الذي يحدثه جيت هب أوتوماتيكياً
-        async function loadMoviesDatabase() {
-            try {
-                const response = await fetch('links.json');
-                moviesDatabase = await response.json();
-                renderVideos(moviesDatabase, "movies-list");
-            } catch (error) {
-                console.error("فشل تحميل قاعدة بيانات الأفلام:", error);
-                showToast("تعذر تحميل قائمة الأفلام، تأكد من ملف links.json");
-            }
-        }
+ 
+            const moviesDatabase = [
+            // --- أمثلة مضافة لإستخدام سيرفرات VidAPI المباشرة ---
+            { id: 4, title: "مثال سيرفر VidAPI (IMDB)", desc: "مثال تطبيقي لتشغيل فيلم باستخدام الـ ID الخاص بـ IMDB عبر سيرفر الاستضافة VidAPI", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 45, comments: [], sources: [{ label: "سيرفر VidAPI", src: "https://vaplayer.ru/embed/movie/tt23779058" }] },
+            { id: 5, title: "مثال سيرفر VidAPI (TMDB)", desc: "مثال تطبيقي لتشغيل فيلم باستخدام الـ ID الخاص بـ TMDB عبر سيرفر الاستضافة VidAPI", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 20, comments: [], sources: [{ label: "سيرفر VidAPI", src: "https://vaplayer.ru/embed/movie/1147301" }] },
+            
+            { id: 6, title: "عنوان الفيديو 6", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
+            { id: 7, title: "عنوان الفيديو 7", desc: "وصف الفيديو هنا...", category: "مسلسلات", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
+            { id: 8, title: "عنوان الفيديو 8", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
+            { id: 9, title: "عنوان الفيديو 9", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
+            { id: 10, title: "عنوان الفيديو 10", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
+            { id: 11, title: "عنوان الفيديو 11", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
+            { id: 12, title: "عنوان الفيديو 12", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
+            { id: 13, title: "عنوان الفيديو 13", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
+            { id: 14, title: "عنوان الفيديو 14", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
+            { id: 15, title: "عنوان الفيديو 15", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
+            { id: 16, title: "عنوان الفيديو 16", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
+            { id: 17, title: "عنوان الفيديو 17", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
+            { id: 18, title: "عنوان الفيديو 18", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
+            { id: 19, title: "عنوان الفيديو 19", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
+            { id: 20, title: "عنوان الفيديو 20", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
+            { id: 21, title: "عنوان الفيديو 21", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
+            { id: 22, title: "عنوان الفيديو 22", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
+            { id: 23, title: "عنوان الفيديو 23", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
+            { id: 24, title: "عنوان الفيديو 24", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
+            { id: 25, title: "عنوان الفيديو 25", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
+            { id: 26, title: "عنوان الفيديو 26", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
+            { id: 27, title: "عنوان الفيديو 27", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
+            { id: 28, title: "عنوان الفيديو 28", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
+            { id: 29, title: "عنوان الفيديو 29", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
+            { id: 30, title: "عنوان الفيديو 30", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
+            { id: 31, title: "عنوان الفيديو 31", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] },
+            { id: 32, title: "عنوان الفيديو 32", desc: "وصف الفيديو هنا...", category: "افلام", poster: "https://via.placeholder.com/800x450", likes: 0, comments: [], sources: [{ label: "سيرفر 1", src: "ضع_الرابط_هنا" }] }
+        ];
 
         // =========================================================================
         // [TAG: GLOBAL VARIABLES] المتغيرات العامة للنظام
@@ -450,102 +470,22 @@
         let currentVideoSrc = ""; 
         let hlsPlayer = null;
 
-        // =========================================================================
-        // [TAG: STREAM TOKEN MANAGER] نظام مراقبة صلاحية الروابط وتحديثها قبل الانتهاء بـ 5 دقائق
-        // =========================================================================
-        class WebStreamManager {
-            constructor(onRefreshNeeded) {
-                this.onRefreshNeeded = onRefreshNeeded;
-                this.timerId = null;
-            }
-
-            extractExpirationTime(url) {
-                try {
-                    const parts = url.split(',');
-                    if (parts.length > 1) {
-                        const tokenPart = parts[1].split('/')[0];
-                        const exp = parseInt(tokenPart, 10);
-                        if (!isNaN(exp)) return exp;
-                    }
-                    const urlObj = new URL(url);
-                    const exp = urlObj.searchParams.get("expires");
-                    return exp ? parseInt(exp, 10) : null;
-                } catch (e) {
-                    return null;
-                }
-            }
-
-            monitorLink(streamUrl) {
-                const expirationTimestamp = this.extractExpirationTime(streamUrl);
-                if (!expirationTimestamp) return;
-
-                const currentTime = Math.floor(Date.now() / 1000);
-                const timeRemaining = expirationTimestamp - currentTime;
-                const refreshDelaySeconds = timeRemaining - 300; // 5 دقائق قبل الانتهاء
-
-                if (refreshDelaySeconds <= 0) {
-                    this.triggerRefresh();
-                    return;
-                }
-
-                this.stopMonitoring();
-
-                this.timerId = setTimeout(() => {
-                    this.triggerRefresh();
-                }, refreshDelaySeconds * 1000);
-            }
-
-            triggerRefresh() {
-                if (typeof this.onRefreshNeeded === "function") {
-                    this.onRefreshNeeded();
-                }
-            }
-
-            stopMonitoring() {
-                if (this.timerId) {
-                    clearTimeout(this.timerId);
-                    this.timerId = null;
-                }
-            }
+        // تهيئة سجل التنقل لدعم زر الرجوع بالهاتف
+        if (!history.state) {
+            history.replaceState({ view: 'home' }, '');
         }
 
-        const streamManager = new WebStreamManager(async () => {
-            showToast("جاري تجديد صلاحية الرابط في الخلفية...");
-            
-            try {
-                // إرسال طلب للسيرفر الخاص بك (Backend / API) لجلب الرابط الجديد
-                const response = await fetch(`https://your-api-domain.com/get-fresh-token?url=${encodeURIComponent(currentVideoSrc)}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                const data = await response.json();
-                
-                if (data && data.newUrl) {
-                    currentVideoSrc = data.newUrl;
-                    const player = document.getElementById("main-player");
-                    
-                    if (currentVideoSrc.includes(".m3u8") && hlsPlayer) {
-                        hlsPlayer.loadSource(currentVideoSrc);
-                        hlsPlayer.attachMedia(player);
-                    } else {
-                        const currentTime = player.currentTime;
-                        player.src = currentVideoSrc;
-                        player.currentTime = currentTime;
-                        player.play();
-                    }
-
-                    streamManager.monitorLink(currentVideoSrc);
-                    showToast("تم تحديث الرابط بنجاح واستمرار المشاهدة.");
+        window.addEventListener('popstate', function(event) {
+            if (event.state) {
+                if (event.state.view === 'player' && event.state.movie) {
+                    openPlayer(event.state.movie, true);
+                } else if (event.state.view === 'about') {
+                    showAboutUs(null, true);
                 } else {
-                    throw new Error("فشل الـ API في إرجاع رابط جديد");
+                    showHomeView(true);
                 }
-
-            } catch (error) {
-                console.error("خطأ في تحديث الرابط:", error);
-                showToast("تعذر تحديث الرابط تلقائياً، يجدر بك تحديث الصفحة.");
+            } else {
+                showHomeView(true);
             }
         });
 
@@ -809,21 +749,23 @@
         function handleSearch() {
             const query = normalizeText(document.getElementById("searchInput").value);
             const filtered = moviesDatabase.filter(movie => normalizeText(movie.title).includes(query));
-            showHomeView(); 
+            showHomeView(true); 
             renderVideos(filtered, "movies-list");
             document.getElementById("home-title").innerText = query ? "نتائج البحث..." : "أحدث الإضافات";
         }
 
-        function filterCategory(category, element) {
+        function filterCategory(category, element, isBackNav = false) {
             document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
             if(element) element.classList.add('active');
             
             let filtered = category === 'الكل' ? moviesDatabase : moviesDatabase.filter(m => m.category === category);
-            showHomeView();
+            showHomeView(isBackNav);
             renderVideos(filtered, "movies-list");
             document.getElementById("home-title").innerText = category;
             changeTheme(category);
-            toggleSidebar(); 
+            if (document.getElementById("mySidebar").style.width === "280px") {
+                toggleSidebar(); 
+            }
         }
 
         function renderVideos(moviesArray, containerId) {
@@ -852,7 +794,14 @@
             });
         }
 
-        function showHomeView() {
+        function showHomeView(isBackNav = false) {
+            if (!isBackNav && history.state?.view !== 'home') {
+                history.pushState({ view: 'home' }, '');
+            }
+
+            // إرجاع ثيم الموقع للون البرتقالي والأسود الافتراضي
+            changeTheme('الكل');
+
             document.getElementById("home-view").style.display = "block";
             document.getElementById("player-view").style.display = "none";
             document.getElementById("about-view").style.display = "none";
@@ -865,16 +814,23 @@
             if (hlsPlayer) {
                 hlsPlayer.destroy();
             }
-            streamManager.stopMonitoring();
             document.getElementById("playerPoster").style.display = "flex";
         }
 
         // =========================================================================
         // [TAG: VIDEO PLAYER LOGIC] التحكم في مشغل الفيديو والجودات ودعم الـ iframe
         // =========================================================================
-        function openPlayer(movie) {
+        function openPlayer(movie, isBackNav = false) {
             currentVideoId = movie.id;
             currentVideoSrc = movie.sources[0].src;
+
+            // تغيير السجل لدعم زر الرجوع في الهاتف
+            if (!isBackNav) {
+                history.pushState({ view: 'player', movie: movie }, '');
+            }
+
+            // ضبط ثيم اللون تلقائياً بناءً على تصنيف المحتوى (أحمر للأفلام - أزرق للمسلسلات)
+            changeTheme(movie.category);
             
             document.getElementById("home-view").style.display = "none";
             document.getElementById("about-view").style.display = "none";
@@ -931,9 +887,6 @@
             
             posterEl.style.display = "none";
 
-            // تفعيل مراقبة صلاحية الرابط الحالي عند بدء التشغيل
-            streamManager.monitorLink(currentVideoSrc);
-
             // فحص نوع الرابط هل هو iframe أم ملف فيديو مباشر
             if (currentVideoSrc.includes("iframe") || currentVideoSrc.includes("http") && !currentVideoSrc.includes(".mp4") && !currentVideoSrc.includes(".m3u8") && !currentVideoSrc.includes("video-nss")) {
                 // إذا كان رابط مشغل خارجي/iframe
@@ -974,17 +927,22 @@
             }
         }
 
-        function showAboutUs(element) {
+        function showAboutUs(element, isBackNav = false) {
+            if (!isBackNav && history.state?.view !== 'about') {
+                history.pushState({ view: 'about' }, '');
+            }
+
             document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
-            element.classList.add('active');
+            if(element) element.classList.add('active');
             document.getElementById("home-view").style.display = "none";
             document.getElementById("player-view").style.display = "none";
             document.getElementById("about-view").style.display = "block";
-            toggleSidebar();
+            if (document.getElementById("mySidebar").style.width === "280px") {
+                toggleSidebar();
+            }
         }
         
-        // تشغيل دالة جلب قاعدة البيانات من ملف links.json عند فتح الموقع
-        loadMoviesDatabase();
+        renderVideos(moviesDatabase, "movies-list");
         
 </script>
   </body>
