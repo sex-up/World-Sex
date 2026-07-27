@@ -424,10 +424,10 @@ header {
 .comment-submit-btn { background: var(--accent-color); border: none; color: #000; padding: 0 24px; border-radius: 25px; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 12px var(--accent-glow); }
 
 .comments-scroll-box { 
-    max-height: 350px; 
+    max-height: 500px; 
     overflow-y: auto; 
-    overflow-x: hidden;
-    padding-left: 5px; 
+    overflow: visible;
+    padding-left: 10px; 
     scrollbar-width: thin;
     scrollbar-color: var(--accent-color) rgba(255, 140, 0, 0.05);
 }
